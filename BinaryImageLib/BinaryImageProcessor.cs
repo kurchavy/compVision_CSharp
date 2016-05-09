@@ -51,18 +51,74 @@ namespace AR.CompVision.Binary
             var img = _img.Negate();
             int label = 0;
 
-            for (int i = 0; i < _img.Rows; i++)
+            for (int y = 0; y < _img.Rows; y++)
             {
-                for (int j = 0; j < _img.Cols; j++)
+                for (int x = 0; x < _img.Cols; x++)
                 {
-                    if (img[i, j] == -1)
+                    if (img[x, y] == -1)
                     {
                         label += 1;
-                        SearchCC(img, label, i, j, connType);
+                        SearchCC(img, label, x, y, connType);
                     }
                 }
             }
 
+            return img;
+        }
+
+        /// <summary>
+        /// Поиск связных компонент с помощью Union-Find
+        /// </summary>
+        /// <param name="connType"></param>
+        /// <returns></returns>
+        public ImageArray ConnectedComponentsUnionFind(PixelNeighborhood connType)
+        {
+            ImageArray img = _img.Copy();
+            DisjointSetForest dsf = new DisjointSetForest();
+
+            int label = 1;
+            for (int y=0; y < _img.Rows; y++)
+            {
+                for (int x = 0; x < img.Cols; x++)
+                    img[x, y] = 0;
+
+                for (int x = 0; x < img.Cols; x++)
+                {
+                    if (_img[x, y] == 1)
+                    {
+                        var pn = GetPriorNeighboorPixels(x, y, connType).Where(p => _img[p.X, p.Y] != 0);
+                        int m = int.MaxValue;
+                        if (pn.Count() == 0)
+                        {
+                            m = label;
+                            dsf.AddSet(m);
+                            label += 1;
+                        }
+                        else
+                        {
+                            foreach (var p in pn)
+                            {
+                                if (m > img[p.X, p.Y])
+                                    m = img[p.X, p.Y];
+                            }
+                        }
+                        img[x, y] = m;
+                        foreach (var p in pn)
+                        {
+                            if (img[p.X, p.Y] != m)
+                                dsf.Union(m, img[p.X, p.Y]);
+                        }
+                    }
+                }
+            }
+            for (int y = 0; y < _img.Rows; y++)
+            {
+                for (int x = 0; x < img.Cols; x++)
+                {
+                    if (_img[x, y] == 1)
+                        img[x, y] = dsf.FindSet(img[x, y]);
+                }
+            }
             return img;
         }
 
@@ -78,6 +134,13 @@ namespace AR.CompVision.Binary
             }
         }
 
+        /// <summary>
+        /// Получить всех соседей пикселя
+        /// </summary>
+        /// <param name="x">Координата X</param>
+        /// <param name="y">Координата Y</param>
+        /// <param name="connType">Тип соседства</param>
+        /// <returns></returns>
         private ICollection<Point> GetNeighboorPixels(int x, int y, PixelNeighborhood connType)
         {
             List<Point> result = new List<Point>();
@@ -93,7 +156,7 @@ namespace AR.CompVision.Binary
                 result.Add(new Point(x - 1, y));
             if (x < (_img.Cols - 1))
                 result.Add(new Point(x + 1, y));
-            if (y < (_img.Cols - 1))
+            if (y < (_img.Rows - 1))
             {
                 if (x > 0 && connType == PixelNeighborhood.EightConnected)
                     result.Add(new Point(x - 1, y + 1));
@@ -104,6 +167,29 @@ namespace AR.CompVision.Binary
             return result;
         }
 
+        #endregion
+
+        #region Поиск связных компонент (классика)
+        /// <summary>
+        /// Получить левых и верхних соседей пикселя
+        /// </summary>
+        /// <param name="x">Координата X</param>
+        /// <param name="y">Координата Y</param>
+        /// <param name="connType">Тип соседства</param>
+        /// <returns></returns>
+        private ICollection<Point> GetPriorNeighboorPixels(int x, int y, PixelNeighborhood connType)
+        {
+            List<Point> result = new List<Point>();
+            if (y > 0)
+            {
+                if (x > 0 && connType == PixelNeighborhood.EightConnected)
+                    result.Add(new Point(x - 1, y - 1));
+                result.Add(new Point(x, y - 1));
+            }
+            if (x > 0)
+                result.Add(new Point(x - 1, y));
+            return result;
+        }
         #endregion
 
         #region Подсчет углов
@@ -145,10 +231,10 @@ namespace AR.CompVision.Binary
 
         private bool CheckPattern(int[] patt, int r, int c)
         {
-            if (_img[r, c] == patt[0] &&
-                _img[r, c + 1] == patt[1] &&
-                _img[r + 1, c] == patt[2] &&
-                _img[r + 1, c + 1] == patt[3])
+            if (_img[c, r] == patt[0] &&
+                _img[c, r + 1] == patt[1] &&
+                _img[c + 1, r] == patt[2] &&
+                _img[c + 1, r + 1] == patt[3])
                 return true;
             return false;
         } 

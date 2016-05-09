@@ -31,11 +31,13 @@ namespace AR.CompVision
         {
             get
             {
-                return _image[x * Cols + y];
+                //return _image[x * Cols + y];
+                return _image[x + y * Cols];
             }
             set
             {
-                _image[x * Cols + y] = value;
+                //_image[x * Cols + y] = value;
+                _image[x + y * Cols] = value;
             }
         }
 
