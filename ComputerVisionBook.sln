@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Testers", "Testers", "{AEC2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindObjects", "FindObjects\FindObjects.csproj", "{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectedComponents", "ConnectedComponents\ConnectedComponents.csproj", "{73934550-9E3C-4EF1-8551-32931B2957B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73934550-9E3C-4EF1-8551-32931B2957B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73934550-9E3C-4EF1-8551-32931B2957B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73934550-9E3C-4EF1-8551-32931B2957B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73934550-9E3C-4EF1-8551-32931B2957B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -39,5 +45,6 @@ Global
 		{A524F598-3616-415F-80E8-125006D0B2BB} = {5FF8FD1B-C4B9-4A1A-B9A2-B97F24B22E9F}
 		{AEC21A46-FA7E-4614-9920-B0B3532520E3} = {5FF8FD1B-C4B9-4A1A-B9A2-B97F24B22E9F}
 		{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12} = {AEC21A46-FA7E-4614-9920-B0B3532520E3}
+		{73934550-9E3C-4EF1-8551-32931B2957B7} = {AEC21A46-FA7E-4614-9920-B0B3532520E3}
 	EndGlobalSection
 EndGlobal

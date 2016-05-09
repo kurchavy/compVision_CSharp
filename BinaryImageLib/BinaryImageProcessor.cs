@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,6 +41,70 @@ namespace AR.CompVision.Binary
             }
             return (cornExt - cornInt) / 4;
         }
+
+        /// <summary>
+        /// Рекурсивный поиск связных компонент
+        /// </summary>
+        /// <returns></returns>
+        public ImageArray ConnectedComponentsRecursive(PixelNeighborhood connType)
+        {
+            var img = _img.Negate();
+            int label = 0;
+
+            for (int i = 0; i < _img.Rows; i++)
+            {
+                for (int j = 0; j < _img.Cols; j++)
+                {
+                    if (img[i, j] == -1)
+                    {
+                        label += 1;
+                        SearchCC(img, label, i, j, connType);
+                    }
+                }
+            }
+
+            return img;
+        }
+
+        #region Поиск связных компонент (рекурсия)
+        private void SearchCC(ImageArray img, int label, int x, int y, PixelNeighborhood connType)
+        {
+            img[x, y] = label;
+            var nSet = GetNeighboorPixels(x, y, connType);
+            foreach (var p in nSet)
+            {
+                if (img[p.X, p.Y] == -1)
+                    SearchCC(img, label, p.X, p.Y, connType);
+            }
+        }
+
+        private ICollection<Point> GetNeighboorPixels(int x, int y, PixelNeighborhood connType)
+        {
+            List<Point> result = new List<Point>();
+            if (y > 0)
+            {
+                if (x > 0 && connType == PixelNeighborhood.EightConnected)
+                    result.Add(new Point(x - 1, y - 1));
+                result.Add(new Point(x, y - 1));
+                if (x < (_img.Cols - 1) && connType == PixelNeighborhood.EightConnected)
+                    result.Add(new Point(x + 1, y - 1));
+            }
+            if (x > 0)
+                result.Add(new Point(x - 1, y));
+            if (x < (_img.Cols - 1))
+                result.Add(new Point(x + 1, y));
+            if (y < (_img.Cols - 1))
+            {
+                if (x > 0 && connType == PixelNeighborhood.EightConnected)
+                    result.Add(new Point(x - 1, y + 1));
+                result.Add(new Point(x, y + 1));
+                if (x < (_img.Cols - 1) && connType == PixelNeighborhood.EightConnected)
+                    result.Add(new Point(x + 1, y + 1));
+            }
+            return result;
+        }
+
+        #endregion
 
         #region Подсчет углов
         private readonly int[][] ExtCorners = new int[][]
