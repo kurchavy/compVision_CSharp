@@ -10,12 +10,7 @@ namespace AR.CompVision.Binary
     {
         static void Main(string[] args)
         {
-            ImageArray ia = new ImageArray(@"pics/2.bmp");
-            Console.WriteLine(ia);
-            Console.WriteLine("");
-            var bip = new BinaryImageProcessor(ia);
-            Console.WriteLine("Number of objects - " + bip.CountObjects());
-            Console.ReadLine();
+            
         }
     }
 }

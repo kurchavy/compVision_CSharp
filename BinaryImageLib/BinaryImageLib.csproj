@@ -4,18 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D62A166B-8CE4-4EBD-8B9C-5693CF5A8B84}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{A524F598-3616-415F-80E8-125006D0B2BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AR.CompVision.Binary</RootNamespace>
-    <AssemblyName>BinaryImageWorks</AssemblyName>
+    <RootNamespace>BinaryImageLib</RootNamespace>
+    <AssemblyName>BinaryImageLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +23,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -44,17 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="BinaryImageProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BinaryImageLib\BinaryImageLib.csproj">
-      <Project>{a524f598-3616-415f-80e8-125006d0b2bb}</Project>
-      <Name>BinaryImageLib</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CompVision.Shared\CompVision.Shared.csproj">
       <Project>{59933f51-df1e-416c-8440-359d10e5c2d2}</Project>
       <Name>CompVision.Shared</Name>

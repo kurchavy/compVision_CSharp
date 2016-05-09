@@ -6,14 +6,23 @@ using System.Threading.Tasks;
 
 namespace AR.CompVision.Binary
 {
-    class BinaryImageProcessor
+    public class BinaryImageProcessor
     {
         private ImageArray _img;
         
+        /// <summary>
+        /// Создание процессора из ImageArray
+        /// </summary>
+        /// <param name="img"></param>
         public BinaryImageProcessor(ImageArray img)
         {
             _img = img;
         }
+
+        /// <summary>
+        /// Подсчет объектов на изображении
+        /// </summary>
+        /// <returns></returns>
         public int CountObjects()
         {
             int cornExt = 0;
