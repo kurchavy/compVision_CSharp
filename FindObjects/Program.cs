@@ -26,7 +26,7 @@ namespace FindObjects
 
         static void Calculate(ImageArray ia, string comment)
         {
-            var bip = new BinaryImageProcessor(ia);
+            var bip = new BinaryImage(ia);
             Console.WriteLine(comment);
             Console.WriteLine(ia);
             Console.WriteLine("Number of objects - " + bip.CountObjects());

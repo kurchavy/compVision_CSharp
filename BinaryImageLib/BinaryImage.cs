@@ -7,18 +7,22 @@ using System.Threading.Tasks;
 
 namespace AR.CompVision.Binary
 {
-    public class BinaryImageProcessor
+    public class BinaryImage
     {
-        private ImageArray _img;
+        protected ImageArray _img;
         
         /// <summary>
         /// Создание процессора из ImageArray
         /// </summary>
         /// <param name="img"></param>
-        public BinaryImageProcessor(ImageArray img)
+        public BinaryImage(ImageArray img)
         {
             _img = img;
         }
+
+        protected BinaryImage() { }
+
+        public ImageArray ImageArray { get { return _img; } }
 
         /// <summary>
         /// Подсчет объектов на изображении
@@ -141,7 +145,7 @@ namespace AR.CompVision.Binary
         /// <param name="y">Координата Y</param>
         /// <param name="connType">Тип соседства</param>
         /// <returns></returns>
-        private ICollection<Point> GetNeighboorPixels(int x, int y, PixelNeighborhood connType)
+        protected ICollection<Point> GetNeighboorPixels(int x, int y, PixelNeighborhood connType)
         {
             List<Point> result = new List<Point>();
             if (y > 0)
@@ -237,7 +241,7 @@ namespace AR.CompVision.Binary
                 _img[c + 1, r + 1] == patt[3])
                 return true;
             return false;
-        } 
+        }
         #endregion
     }
 }

@@ -41,6 +41,30 @@ namespace AR.CompVision
             }
         }
 
+        public IEnumerable<Point> AllPoints
+        {
+            get
+            {
+                for (int i=0; i< _image.Length; i++)
+                {
+                    var row = i / Rows;
+                    var col = i - row * Rows;
+                    yield return new Point(row, col);
+                }
+            }
+        }
+        public int this[Point p]
+        {
+            get
+            {
+                return this[p.X, p.Y];
+            }
+            set
+            {
+                this[p.X, p.Y] = value;
+            }
+        }
+
         private ImageArray() { }
 
         /// <summary>
@@ -51,8 +75,8 @@ namespace AR.CompVision
         /// <param name="cols">Количество столбцов</param>
         public ImageArray(int[] array, int rows, int cols)
         {
-            //if (array.Length != rows * cols)
-            //    throw new ArgumentException("Wrong array size");
+            if (array.Length != rows * cols)
+                throw new ArgumentException("Wrong array size");
             _image = array;
             Rows = rows;
             Cols = cols;
@@ -106,6 +130,7 @@ namespace AR.CompVision
             return inv;
         }
 
+        
         /// <summary>
         /// Возврат строкового представления ImageArray
         /// </summary>

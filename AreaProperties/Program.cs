@@ -1,4 +1,5 @@
 ﻿using AR.CompVision;
+using AR.CompVision.Binary;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -12,21 +13,15 @@ namespace AreaProperties
     {
         static void Main(string[] args)
         {
-            List<Point> pts = new List<Point>()
-            {
-                new Point(8, 6),
-                new Point(8, 7),
-            };
-
-            ImageArea area = new ImageArea(pts);
-            int x, y;
-            //var ia = area.ToImageArray(out x, out y);
-            var ia = area.ToImageArray();
-            Console.WriteLine(ia);
+            
+            var area = new BinaryImageArea(new ImageArray(@"pics/1.bmp"));
+            Console.WriteLine(area.ImageArray);
             Console.WriteLine();
             Console.WriteLine("Area: " + area.GetArea());
             Console.WriteLine("Centroid: " + area.GetCentroid());
-            Console.WriteLine();
+            Console.WriteLine("Radial distance: " + area.GetMeanRadialDistance());
+            Console.WriteLine("Radial distance StDev: " + area.GetMeanRadialDistanceStd());
+            Console.WriteLine("Circularity: " + area.GetCircularity());
             Console.ReadLine();
         }
     }

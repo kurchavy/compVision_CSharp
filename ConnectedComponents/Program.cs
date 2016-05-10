@@ -40,7 +40,7 @@ namespace ConnectedComponents
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            var bip = new BinaryImageProcessor(ia);
+            var bip = new BinaryImage(ia);
             var res = bip.ConnectedComponentsRecursive(PixelNeighborhood.EightConnected);
             sw.Stop();
             Console.WriteLine("Recursive: " + sw.ElapsedMilliseconds);
@@ -51,7 +51,7 @@ namespace ConnectedComponents
         {
             Stopwatch sw = new Stopwatch();
             sw.Start();
-            var bip = new BinaryImageProcessor(ia);
+            var bip = new BinaryImage(ia);
             var res = bip.ConnectedComponentsUnionFind(PixelNeighborhood.EightConnected);
             sw.Stop();
             Console.WriteLine("Union-Find: " + sw.ElapsedMilliseconds);

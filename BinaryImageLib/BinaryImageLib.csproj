@@ -42,8 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BinaryImageProcessor.cs" />
-    <Compile Include="ImageArea.cs" />
+    <Compile Include="BinaryImage.cs" />
+    <Compile Include="BinaryImageArea.cs" />
     <Compile Include="PixelNeighborhood.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
