@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindObjects", "FindObjects\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectedComponents", "ConnectedComponents\ConnectedComponents.csproj", "{73934550-9E3C-4EF1-8551-32931B2957B7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AreaProperties", "AreaProperties\AreaProperties.csproj", "{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{73934550-9E3C-4EF1-8551-32931B2957B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73934550-9E3C-4EF1-8551-32931B2957B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73934550-9E3C-4EF1-8551-32931B2957B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -46,5 +52,6 @@ Global
 		{AEC21A46-FA7E-4614-9920-B0B3532520E3} = {5FF8FD1B-C4B9-4A1A-B9A2-B97F24B22E9F}
 		{B3EA0693-DDDE-455C-8FCA-1B3415FD0F12} = {AEC21A46-FA7E-4614-9920-B0B3532520E3}
 		{73934550-9E3C-4EF1-8551-32931B2957B7} = {AEC21A46-FA7E-4614-9920-B0B3532520E3}
+		{73FA28B5-8688-46A1-AADC-6AEA4B3C8B57} = {AEC21A46-FA7E-4614-9920-B0B3532520E3}
 	EndGlobalSection
 EndGlobal

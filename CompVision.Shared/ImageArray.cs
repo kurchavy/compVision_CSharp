@@ -51,8 +51,8 @@ namespace AR.CompVision
         /// <param name="cols">Количество столбцов</param>
         public ImageArray(int[] array, int rows, int cols)
         {
-            if (array.Length != rows * cols)
-                throw new ArgumentException("Wrong array size");
+            //if (array.Length != rows * cols)
+            //    throw new ArgumentException("Wrong array size");
             _image = array;
             Rows = rows;
             Cols = cols;
