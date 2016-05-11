@@ -29,10 +29,10 @@ namespace ConnectedComponents
             CalcUnionFind(ia);
 
             //Console.ReadLine();
-            ia = new ImageArray("pics/1.bmp");
-            Console.WriteLine("Image 178*124 pix");
-            CalcRecursive(ia);
-            CalcUnionFind(ia);
+            //ia = new ImageArray("pics/1.bmp");
+            //Console.WriteLine("Image 178*124 pix");
+            //CalcRecursive(ia);
+            //CalcUnionFind(ia);
             Console.ReadLine();
         }
 
@@ -44,7 +44,7 @@ namespace ConnectedComponents
             var res = bip.ConnectedComponentsRecursive(PixelNeighborhood.EightConnected);
             sw.Stop();
             Console.WriteLine("Recursive: " + sw.ElapsedMilliseconds);
-            //Console.WriteLine(res);
+            Console.WriteLine(res);
         }
 
         static void CalcUnionFind(ImageArray ia)

@@ -28,7 +28,7 @@ namespace AR.CompVision.Binary
         public BinaryImageArea(ImageArray img) 
             : base(img)
         {
-            _points = new List<Point>(_img.AllPoints.Where(p => _img[p] != 0));
+            _points = new List<Point>(_img.Points.Where(p => _img[p] != 0));
         }
 
         /// <summary>
@@ -46,6 +46,7 @@ namespace AR.CompVision.Binary
             int[] arr = new int[rows * cols];
 
             _img = new ImageArray(arr, rows, cols);
+
             foreach (var p in _points)
                 _img[p] = 1;
         }
@@ -104,13 +105,13 @@ namespace AR.CompVision.Binary
         private IEnumerable<Point> GetEdgePixels()
         {
             List<Point> res = new List<Point>();
-            for (int y = 0; y < _img.Rows; y++)
+            for (int y = 0; y < _img.RowCount; y++)
             {
-                for (int x = 0; x < _img.Cols; x++)
+                for (int x = 0; x < _img.ColCount; x++)
                 {
                     if (_img[x, y] == 0)
                         continue;
-                    if (y == 0 || x == 0 || y == (_img.Rows - 1) || x == (_img.Cols - 1))
+                    if (y == 0 || x == 0 || y == (_img.RowCount - 1) || x == (_img.ColCount - 1))
                     {
                         res.Add(new Point(x, y));
                     }

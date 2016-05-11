@@ -33,13 +33,13 @@ namespace AR.CompVision.Binary
             int cornExt = 0;
             int cornInt = 0;
 
-            for (int i = 0; i<_img.Rows - 1; i++)
+            for (int y = 0; y<_img.RowCount - 1; y++)
             {
-                for (int j = 0; j < _img.Cols - 1; j++)
+                for (int x = 0; x < _img.ColCount - 1; x++)
                 {
-                    if (ExternalCornerMatch(i, j))
+                    if (ExternalCornerMatch(x, y))
                         cornExt++;
-                    if (InternalCornerMatch(i, j))
+                    if (InternalCornerMatch(x, y))
                         cornInt++;
                 }
             }
@@ -55,14 +55,14 @@ namespace AR.CompVision.Binary
             var img = _img.Negate();
             int label = 0;
 
-            for (int y = 0; y < _img.Rows; y++)
+            for (int y = 0; y < _img.RowCount; y++)
             {
-                for (int x = 0; x < _img.Cols; x++)
+                for (int x = 0; x < _img.ColCount; x++)
                 {
                     if (img[x, y] == -1)
                     {
                         label += 1;
-                        SearchCC(img, label, x, y, connType);
+                        SearchCC(img, label, new Point(x, y), connType);
                     }
                 }
             }
@@ -81,16 +81,16 @@ namespace AR.CompVision.Binary
             DisjointSetForest dsf = new DisjointSetForest();
 
             int label = 1;
-            for (int y=0; y < _img.Rows; y++)
+            for (int y=0; y < _img.RowCount; y++)
             {
-                for (int x = 0; x < img.Cols; x++)
+                for (int x = 0; x < img.ColCount; x++)
                     img[x, y] = 0;
 
-                for (int x = 0; x < img.Cols; x++)
+                for (int x = 0; x < img.ColCount; x++)
                 {
                     if (_img[x, y] == 1)
                     {
-                        var pn = GetPriorNeighboorPixels(x, y, connType).Where(p => _img[p.X, p.Y] != 0);
+                        var pn = GetPriorNeighboorPixels(x, y, connType).Where(p => _img[p] != 0);
                         int m = int.MaxValue;
                         if (pn.Count() == 0)
                         {
@@ -102,22 +102,22 @@ namespace AR.CompVision.Binary
                         {
                             foreach (var p in pn)
                             {
-                                if (m > img[p.X, p.Y])
-                                    m = img[p.X, p.Y];
+                                if (m > img[p])
+                                    m = img[p];
                             }
                         }
                         img[x, y] = m;
                         foreach (var p in pn)
                         {
-                            if (img[p.X, p.Y] != m)
-                                dsf.Union(m, img[p.X, p.Y]);
+                            if (img[p] != m)
+                                dsf.Union(m, img[p]);
                         }
                     }
                 }
             }
-            for (int y = 0; y < _img.Rows; y++)
+            for (int y = 0; y < _img.RowCount; y++)
             {
-                for (int x = 0; x < img.Cols; x++)
+                for (int x = 0; x < img.ColCount; x++)
                 {
                     if (_img[x, y] == 1)
                         img[x, y] = dsf.FindSet(img[x, y]);
@@ -127,14 +127,14 @@ namespace AR.CompVision.Binary
         }
 
         #region Поиск связных компонент (рекурсия)
-        private void SearchCC(ImageArray img, int label, int x, int y, PixelNeighborhood connType)
+        private void SearchCC(ImageArray img, int label, Point pt, PixelNeighborhood connType)
         {
-            img[x, y] = label;
-            var nSet = GetNeighboorPixels(x, y, connType);
+            img[pt] = label;
+            var nSet = GetNeighboorPixels(pt.X, pt.Y, connType);
             foreach (var p in nSet)
             {
-                if (img[p.X, p.Y] == -1)
-                    SearchCC(img, label, p.X, p.Y, connType);
+                if (img[p] == -1)
+                    SearchCC(img, label, p, connType);
             }
         }
 
@@ -153,19 +153,19 @@ namespace AR.CompVision.Binary
                 if (x > 0 && connType == PixelNeighborhood.EightConnected)
                     result.Add(new Point(x - 1, y - 1));
                 result.Add(new Point(x, y - 1));
-                if (x < (_img.Cols - 1) && connType == PixelNeighborhood.EightConnected)
+                if (x < (_img.ColCount - 1) && connType == PixelNeighborhood.EightConnected)
                     result.Add(new Point(x + 1, y - 1));
             }
             if (x > 0)
                 result.Add(new Point(x - 1, y));
-            if (x < (_img.Cols - 1))
+            if (x < (_img.ColCount - 1))
                 result.Add(new Point(x + 1, y));
-            if (y < (_img.Rows - 1))
+            if (y < (_img.RowCount - 1))
             {
                 if (x > 0 && connType == PixelNeighborhood.EightConnected)
                     result.Add(new Point(x - 1, y + 1));
                 result.Add(new Point(x, y + 1));
-                if (x < (_img.Cols - 1) && connType == PixelNeighborhood.EightConnected)
+                if (x < (_img.ColCount - 1) && connType == PixelNeighborhood.EightConnected)
                     result.Add(new Point(x + 1, y + 1));
             }
             return result;
@@ -213,32 +213,32 @@ namespace AR.CompVision.Binary
             new int[] { 0,1,1,1 },
         };
 
-        private bool ExternalCornerMatch(int r, int c)
+        private bool ExternalCornerMatch(int x, int y)
         {
             foreach (var pat in ExtCorners)
             {
-                if (CheckPattern(pat, r, c))
+                if (CheckPattern(pat, x, y))
                     return true;
             }
             return false;
         }
 
-        private bool InternalCornerMatch(int r, int c)
+        private bool InternalCornerMatch(int x, int y)
         {
             foreach (var pat in IntCorners)
             {
-                if (CheckPattern(pat, r, c))
+                if (CheckPattern(pat, x, y))
                     return true;
             }
             return false;
         }
 
-        private bool CheckPattern(int[] patt, int r, int c)
+        private bool CheckPattern(int[] patt, int x, int y)
         {
-            if (_img[c, r] == patt[0] &&
-                _img[c, r + 1] == patt[1] &&
-                _img[c + 1, r] == patt[2] &&
-                _img[c + 1, r + 1] == patt[3])
+            if (_img[x, y] == patt[0] &&
+                _img[x, y + 1] == patt[1] &&
+                _img[x + 1, y] == patt[2] &&
+                _img[x + 1, y + 1] == patt[3])
                 return true;
             return false;
         }

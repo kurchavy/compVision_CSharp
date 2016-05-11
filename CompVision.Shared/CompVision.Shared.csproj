@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoordinateTransform.cs" />
     <Compile Include="DisjointSetForest.cs" />
     <Compile Include="ImageArray.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

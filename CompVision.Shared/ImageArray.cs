@@ -10,16 +10,17 @@ namespace AR.CompVision
     public class ImageArray
     {
         int[] _image;
+        CoordinateTransformer _transformer;
 
         /// <summary>
         /// Количество строк
         /// </summary>
-        public int Rows { get; private set; }
+        public int RowCount { get; private set; }
 
         /// <summary>
         /// Количество столбцов
         /// </summary>
-        public int Cols { get; private set; }
+        public int ColCount { get; private set; }
 
         /// <summary>
         /// Индексатор доступа к внутреннему массиву
@@ -31,28 +32,19 @@ namespace AR.CompVision
         {
             get
             {
-                //return _image[x * Cols + y];
-                return _image[x + y * Cols];
+                return _image[_transformer.FromPoint(x, y)];
             }
             set
             {
-                //_image[x * Cols + y] = value;
-                _image[x + y * Cols] = value;
+                _image[_transformer.FromPoint(x, y)] = value;
             }
         }
 
-        public IEnumerable<Point> AllPoints
-        {
-            get
-            {
-                for (int i=0; i< _image.Length; i++)
-                {
-                    var row = i / Rows;
-                    var col = i - row * Rows;
-                    yield return new Point(row, col);
-                }
-            }
-        }
+        /// <summary>
+        /// Индексатор доступа к внутреннему массиву
+        /// </summary>
+        /// <param name="p">Нужная точка (X, Y)</param>
+        /// <returns></returns>
         public int this[Point p]
         {
             get
@@ -62,6 +54,17 @@ namespace AR.CompVision
             set
             {
                 this[p.X, p.Y] = value;
+            }
+        }
+
+        public IEnumerable<Point> Points
+        {
+            get
+            {
+                for (int i = 0; i < _image.Length; i++)
+                {
+                    yield return _transformer.FromIndex(i);
+                }
             }
         }
 
@@ -78,8 +81,9 @@ namespace AR.CompVision
             if (array.Length != rows * cols)
                 throw new ArgumentException("Wrong array size");
             _image = array;
-            Rows = rows;
-            Cols = cols;
+            RowCount = rows;
+            ColCount = cols;
+            _transformer = new CoordinateTransformer(rows, cols);
         }
 
         /// <summary>
@@ -89,18 +93,20 @@ namespace AR.CompVision
         public ImageArray(string bmpPath)
         {
             Bitmap bmp = new Bitmap(bmpPath);
-            Rows = bmp.Height;
-            Cols = bmp.Width;
-            _image = new int[Rows * Cols];
-            for (int i = 0; i < Rows; i++)
+            RowCount = bmp.Height;
+            ColCount = bmp.Width;
+            _image = new int[RowCount * ColCount];
+            _transformer = new CoordinateTransformer(RowCount, ColCount);
+
+            for (int r = 0; r < RowCount; r++)
             {
-                for (int j = 0; j < Cols; j++)
+                for (int c = 0; c < ColCount; c++)
                 {
-                    var pix = bmp.GetPixel(j, i);
+                    var pix = bmp.GetPixel(c, r);
                     if (pix.R == 255 && pix.G == 255 && pix.B == 255)
-                        _image[i * Cols + j] = 0;
+                        _image[_transformer.FromRowColumn(r, c)] = 0;
                     else
-                        _image[i * Cols + j] = 1;
+                        _image[_transformer.FromRowColumn(r, c)] = 1;
                 }
             }
         }
@@ -112,9 +118,10 @@ namespace AR.CompVision
         public ImageArray Copy()
         {
             ImageArray inv = new ImageArray();
-            inv.Cols = Cols;
-            inv.Rows = Rows;
+            inv.ColCount = ColCount;
+            inv.RowCount = RowCount;
             inv._image = new int[_image.Length];
+            inv._transformer = new CoordinateTransformer(RowCount, ColCount);
             Array.Copy(_image, inv._image, _image.Length);
             return inv;
         }
@@ -138,11 +145,11 @@ namespace AR.CompVision
         public override string ToString()
         {
             string result = "";
-            for (int i = 0; i < Rows; i++)
+            for (int i = 0; i < RowCount; i++)
             {
-                for (int j = 0; j < Cols; j++)
+                for (int j = 0; j < ColCount; j++)
                 {
-                    result += _image[j + i * Cols] + " ";
+                    result += _image[j + i * ColCount] + " ";
                 }
                 result += Environment.NewLine;
             }
